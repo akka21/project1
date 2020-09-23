@@ -1,62 +1,98 @@
 <?php
-
-Class DB
-{
-    private $Host; 
-    private $username;
-    private $password;
-    private $database;
+// database.php
+class DB{
+    private $host;
+    private $user;
+    private $pass;
+    private $name;
     private $charset;
+
     private $db;
+    private $stmt;
+    private $resultSet;
 
+    public function __construct($host, $user, $pass, $name, $charset){
+        $this->host = $host;
+        $this->user = $user;
+        $this->pass = $pass;
+        $this->name = $name;
+        $this->charset = $charset;
 
-  public function __construct($Host, $username, $password, $database, $charset){
-
-    $this->host = $host; //Localhost
-    $this->username = $username; // Root name
-    $this->password = $password;
-    $this->database = $database;
-    $this->charset = $charset;
-
-    try{
-        // DSN connection method
-        /*
-        - mysql driver
-        - host (localhost/127.0.0.1)
-        - database (schhema) name
-        - charset
-        */
-        $dsn = ("mysql:host=$this-> host;dbname=$this->database;charset=$this->charset";
-        $this->db = new PDO($dsn, $this->username, $this->password);
-        echo "Database connection successfully established";
-
-            //$this->connect = new PDO("mysql:host = this->host;dbname=..",this->username
-        }catch(PDOException $e){
-            echo $e->getMessage();
-            exit("An error occurred");
+        try{
+            $dsn = "mysql:host=$this->host; dbname=$this->name; charset=$this->charset";
+            $this->db = new PDO($dsn, $this->user, $this->pass);
+            $this->resultSet = [];
+            $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $error) {
+            echo $error->getMessage();
+            exit("An error occured");
         }
-    
     }
 
+    public function execute()
+    {
+        try {
+            $query1 = "INSERT INTO account (email, password) VALUES (:email, :wachtwoord)";
+            $query2 = "INSERT INTO persoon (voornaam, tussenvoegsel, achternaam, username) VALUES (:voornaam, :tussenvoegsel, :achternaam, :username)";
+            $query3 = "UPDATE persoon SET account_id = (select id from account where email = :email)";
 
+            $statement1 = $this->db->prepare($query1);
+            $statement2 = $this->db->prepare($query2);
+            $statement3 = $this->db->prepare($query3);
 
-    public function executeQueryExample({
-        $sql = "SELECT * FROM account WHERE email=$email AND status=$status";
-        $statement = $this->db->prepare($query);
-        $statement->execute();
-        $statement->fetch();
+            $statement1->execute(
+                array(
+                    'email' => $_POST["email"],
+                    'wachtwoord' => $_POST["wachtwoord"]
+                )
+            );
 
+            $statement2->execute(
+                array(
+                    'voornaam' => $_POST["voornaam"],
+                    'tussenvoegsel' => $_POST["tussenvoegsel"],
+                    'achternaam' => $_POST["achternaam"],
+                    'username' => $_POST["username"]
+                )
+            );
 
-        $sql = 'SELECT * FROM account WHERE email=? AND status=?';
-        $statement = $this->db->prepare($query);
-        $statement->execute([$email, $status]);
-        $statement->fetch();
+            $statement3->execute(
+                array(
+                    'email' => $_POST["email"],
+                )
+            );
+            
+            header("location:index.php");
 
-
-        $sql = 'SELECT * FROM account WHERE email=:email AND status=:status';
-        $statement = $this->db->prepare($query);
-        $statement->execute(['email' => $email, 'status' => $status]);
-        $statement->fetch();
+        } catch (PDOException $error) {
+            echo $error->getMessage();
+            exit("An error occured");
+        }
     }
 
+    public function login(){
+        try {
+            $query1 = "SELECT * FROM account where email = :email AND password = :password";
+            $statement1 = $this->db->prepare($query1);
+            $statement1->execute(
+                array(
+                    'email' => $_POST["email"],
+                    'password' => $_POST["password"]
+                )
+            );
+
+            $count = $statement1->rowCount();
+
+            if ($count > 0) {
+                $_SESSION["email"] = $_POST["email"];
+                header("location: login_succes.php");
+            } else {
+                echo '<label>Verkeerd wachtwoord of username</label>';
+            }
+            
+        } catch (PDOException $error) {
+            echo $error->getMessage();
+            exit("An error occured");
+        }
+    }
 }
