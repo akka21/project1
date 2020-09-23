@@ -1,22 +1,33 @@
 -- hiermee verwijderd je een database met dezelfde naam
-DROP DATABASE project1;
-
--- en dan kun je met deze statement een database maken 
+-- Deze line create de project1 database.
 CREATE DATABASE project1;
-
-CREATE TABLE Account {
-    id int not null primary key AUTO_INCREMENT,
-    email varchar(255) unique,
-    password varchar(255)
-};
-
-CREATE TABLE Persoon {
-    id int not null PRIMARY KEY AUTO_INCREMENT,
-    voornaam VARCHAR(255),
+--Deze line selecteert de project1 database om er mee te werken.
+USE project1;
+--Deze statement creates een table.
+CREATE TABLE Account (
+    id INT NOT NULL AUTO_INCREMENT,
+    email VARCHAR(255) UNIQUE  NOT NULL,
+    password VARCHAR(255)  NOT NULL,
+    PRIMARY KEY(id)
+);
+--Deze statement creates een table.
+CREATE TABLE Persoon (
+    id INT NOT NULL AUTO_INCREMENT NOT NULL,
+    voornaam VARCHAR(255) NOT NULL,
     tussenvoegsel VARCHAR(255),
-    achternaam VARCHAR(255),
-    username VARCHAR(255),
-    account_id int not null, 
-    foreign key account_id REFERENCES account(id)
-};
+    achternaam VARCHAR(255) NOT NULL,
+    username VARCHAR(255) NOT NULL,
+    account_id INT,
+    PRIMARY KEY(id),
+    FOREIGN KEY (account_id) REFERENCES account(id)
+);
+INSERT INTO Account (email, password)
+VALUES ('akka@admin.com', 'admin');
+
+INSERT INTO Persoon (voornaam, tussenvoegsel, achternaam, username)
+VALUES ('nouaman', 'van', 'akka', 'admin');
+
+UPDATE Persoon 
+SET account_id = (select id from account where email = 'akka@admin.com')
+WHERE voornaam = 'akka';
 

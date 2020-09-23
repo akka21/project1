@@ -1,7 +1,27 @@
 <?php
 //registreren.php
 
+    include'database.php';
+
+    $db = new database('localhost', 'root', '', 'project1', 'utf8');
+    $db->executeQueryExample();
+
 ?>
+
+<!DOCTYPE html>
+<form action="signup.php" method="post">
+    <input type="text" name="fname" placeholder="Voornaam" required /><br>
+    <input type="text" name="tvoegsel" placeholder="Tussenvoegsel" required /><br>
+    <input type="text" name="lname" placeholder="Achternaam" required /><br>
+    <input type="text" name="email" placeholder="Email" required /><br>
+    <input type="text" name="uname" placeholder="Gebruikersnaam" required /><br>
+    <input type="text" name="pwd" placeholder="Wachtwoord" required /><br>
+    <input type="text" name="cpwd" placeholder="Herhaal wachtwoord" required /><br>
+    <input type="submit" value="Sign up!" required />
+    < a href="index.php">ik heb al een account. Login!</a>
+    </form>
+</html>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,41 +44,17 @@
     <br>
     <div class="container" style="width: 500px;">
         <h3>PHP Registratie Pagina</h3><br>
-        <form action="process.php" method="post">
-
-            <label for="Voornaam">Voornaam</label>
-            <input type="text" name="voornaam" class="form-control" required>
-            <br>
-
-            <label for="Tussenvoegsel">Tussenvoegsel</label>
-            <input type="text" name="tussenvoegsel" class="form-control">
-            <br>
-
-            <label for="Achternaam">Achternaam</label>
-            <input type="text" name="achternaam" class="form-control" required>
-            <br>
-
-            <label for="E-mail">E-mail</label>
-            <input type="text" name="email" class="form-control" required>
-            <br>
-
-            <label for="Username">Username</label>
-            <input type="text" name="username" class="form-control" required>
-            <br>
-            
-            <label for="Wachtwoord">Wachtwoord</label>
-            <input type="password" name="wachtwoord" class="form-control" required>
-            <br>
-
-            <label for="Password">Herhaal Wachtwoord</label>
-            <input type="password" name="herhaal-wachtwoord" class="form-control" required>
-            <br>
-            
-
-            <input type="submit" name="Registeren" class="btn btn-info" value="Registreren">
-            <button type="button" class="btn btn-link"><a href="index.php">Login?</a></button>
-            <button type="button" class="btn btn-link"><a href="lostpsw.php">Wachtwoord vergeten?</a></button>
-        </form>
+        <form action="signup.php" method="post">
+            <input type="text" name="fname" placeholder="Voornaam" required /><br>
+            <input type="text" name="tvoegsel" placeholder="Tussenvoegsel" required /><br>
+            <input type="text" name="lname" placeholder="Achternaam" required /><br>
+            <input type="text" name="email" placeholder="Email" required /><br>
+            <input type="text" name="uname" placeholder="Gebruikersnaam" required /><br>
+            <input type="text" name="pwd" placeholder="Wachtwoord" required /><br>
+            <input type="text" name="cpwd" placeholder="Herhaal wachtwoord" required /><br>
+            <input type="submit" value="Sign up!" required />
+            < a href="index.php">ik heb al een account. Login!</a>
+         </form>
         <br>
     </div>
 </body>
