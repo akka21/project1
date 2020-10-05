@@ -3,34 +3,33 @@
 
 include "database.php";
 
-$fieldnames = ['voornaam', 'achternaam', 'email', 'username', 'wachtwoord']; // neem alle values van de name attributes van de input fields op in deze array
+$fieldnames = ['voornaam', 'achternaam', 'email', 'username', 'wachtwoord']; // todo: password check (password confirmation) // neem alle values van de name attributes van de input fields op in deze array
 $error = FALSE;
 
 foreach($fieldnames as $fieldname){
     if(!isset($_POST[$fieldname]) || empty($_POST[$fieldname])){
         $error = TRUE;
-        exit;
+        // header()
+        //exit;
     }
 }
 
+if(!$error){
+    $voornaam = $_POST["voornaam"];
+    $tussenvoegsel = $_POST["tussenvoegsel"];
+    $achternaam = $_POST["achternaam"];
+    $email = $_POST["email"];
+    $username = $_POST["username"];
+    $wachtwoord = $_POST["wachtwoord"];
+    
+    $db = new DB('localhost', 'root', '', 'project1', 'utf8');
+    $db->execute($voornaam, $tussenvoegsel, $achternaam, $email, $username, $wachtwoord);
 
-if ($_SERVER['REQUEST_METHOD']=='POST'){
-    // als geen error: -> $error == false -> !$error
-    if ($error == FALSE) {
-        $db = new DB('localhost', 'root', '', 'project1', 'utf8');
-        // alle variabelen
-            $voornaam = $_POST["voornaam"];
-            $achternaam = $_POST["achternaam"];
-            $email = $_POST["email"];
-            $username = $_POST["username"];
-            $wachtwoord = $_POST["wachtwoord"];
-            $db->execute($voornaam, $_POST["tussenvoegsel"], $achternaam, $email, $username, $wachtwoord);
-    } else{
-        echo "U bent vergeten wat in te voeren.";
-    }
+    // login -> authenticatie imprlementeren -> index.php
+    // usertype -> admin (update functie in database implemente)
+
+
 }
-
-
 ?>
 
 <!DOCTYPE html>
