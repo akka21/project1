@@ -30,7 +30,7 @@ class DB{
 
     public function execute($firstname, $tsv, $lastname, $email, $uname, $psw){
         try {
-            $query1 = "INSERT INTO account (username, email, password, created, updated, usertype) VALUES (:username, :email, :wachtwoord, CURRENT_TIMESTAMP , CURRENT_TIMESTAMP, 1)";
+            $query1 = "INSERT INTO account (username, email, password, created, last_updated, usertype_id) VALUES (:username, :email, :wachtwoord, CURRENT_TIMESTAMP , CURRENT_TIMESTAMP, 1)";
             $statement1 = $this->db->prepare($query1);
             $statement1->execute(
                 array(
@@ -42,7 +42,7 @@ class DB{
 
             $account_id = $this->db->lastInsertId();
 
-            $query2 = "INSERT INTO persoon (voornaam, tussenvoegsel, achternaam, account_id, created, updated) VALUES (:voornaam, :tussenvoegsel, :achternaam, :account_id, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
+            $query2 = "INSERT INTO persoon (voornaam, tussenvoegsel, achternaam, account_id, created, last_updated) VALUES (:voornaam, :tussenvoegsel, :achternaam, :account_id, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
             $statement2 = $this->db->prepare($query2);
             $statement2->execute(
                 array(
@@ -66,7 +66,6 @@ class DB{
         try {
             $gethash = "SELECT password FROM account WHERE email = :email";
             $statement2 = $this->db->prepare($gethash);
-            $email = $_POST["email"];
             $statement2->execute(
                 array(
                     'email' => $email
