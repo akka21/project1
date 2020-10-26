@@ -49,5 +49,5 @@ INSERT INTO Account (email, password)
 VALUES ('admin@admin.com', '$2y$10$yJa/VC2beT7FmyFiT.afDuHcCYmqARhsV2UJ/QCY89ZfgdQQZFM0q');
 
 INSERT INTO Persoon (voornaam, tussenvoegsel, achternaam, username)
-VALUES ('rocco', 'van', 'baardwijk', 'admin');
+VALUES ('nouaman', 'akka', 'admin');
 
